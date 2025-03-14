@@ -1,0 +1,329 @@
+<!-- Inherit the base template -->
+{% extends 'base.html' %}
+<!-- Load static resources -->
+{% load static %}
+<!-- Replace the title in the base template -->
+{% block title %}Movie List - Movie Review Blog{% endblock %}
+<!-- Use custom CSS styles -->
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/film_list.css' %}">
+<link rel="stylesheet" href="{% static 'css/film_card.css' %}">
+<link rel="stylesheet" href="{% static 'css/blog.css' %}">
+{% endblock %}
+<!-- Main content area -->
+{% block content %}
+<!-- Carousel -->
+<div class="featured-carousel-container mb-5">
+    <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-indicators">
+        <!-- Carousel takes the first five movies -->
+            {% for film in latest_films|slice:":5" %}
+                <!-- Loop counter, forloop.first checks if it's the first element -->
+                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="{{ forloop.counter0 }}" {% if forloop.first %}class="active"{% endif %}></button>
+            {% endfor %}
+        </div>
+        <!-- Carousel content section -->
+        <div class="carousel-inner rounded-carousel">
+            {% for film in latest_films|slice:":5" %}
+                <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                    <!-- Show default image if no poster is available -->
+                    <img src="{% if film.poster %}{{ film.poster.url }}{% else %}/static/img/no-poster.jpg{% endif %}" class="d-block w-100 carousel-image" alt="{{ film.title }}">
+                    <div class="carousel-caption carousel-caption-custom">
+                        <h3 class="carousel-title">{{ film.title }}</h3>
+                        <p class="carousel-description">{{ film.description|truncatechars:150 }}</p>
+                        <!-- Added w-50 mx-auto d-block classes -->
+                <!--    <a href="{% url 'film_detail' film.id %}" class="btn btn-primary btn-lg carousel-btn">     -->
+                        <a href="{% url 'film_detail' film.id %}" class="btn btn-primary btn-lg carousel-btn w-50 mx-auto d-block">
+                            <i class="fas fa-info-circle me-2"></i>View Details
+                        </a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    <!-- Carousel control buttons: left and right arrows -->
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+</div>
+
+<!-- Movie category navigation -->
+<div class="section-header">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div class="d-flex align-items-center">
+            <div class="section-icon"><i class="fas fa-fire"></i></div>
+            <h2 class="section-title m-0">Top Rated Movies</h2>
+        </div>
+        <a href="{% url 'film_list' %}?sort=rating" class="btn btn-outline-primary btn-sm">View All <i class="fas fa-arrow-right ms-1"></i></a>
+    </div>
+</div>
+
+<!-- Top-rated movies -->
+<div class="row top-rated-container mb-5">
+    <!-- Loop through top-rated movies -->
+    {% for film in top_rated_films %}
+        <div class="col-md-2 mb-3">
+            <div class="card top-film-card h-100">
+                <div class="top-film-overlay">
+                    <div class="top-film-number">{{ forloop.counter }}</div>
+                </div>
+                <img src="{% if film.poster %}{{ film.poster.url }}{% else %}/static/img/no-poster.jpg{% endif %}" class="card-img-top film-poster" alt="{{ film.title }}">
+                <div class="card-body">
+                    <h6 class="card-title film-title-small">{{ film.title }}</h6>
+                    <div class="rating">
+                    <!-- Star rating -->
+                        {% if film.avg_rating %}
+                            {% with int_rating=film.avg_rating|floatformat:"0"|add:"0" decimal_part=film.avg_rating|floatformat:1|slice:"-1:"|add:"0" %}
+                                {% for i in "12345" %}
+                                    {% if forloop.counter <= int_rating %}
+                                        <i class="fas fa-star text-warning"></i>
+                                    {% elif forloop.counter == int_rating|add:"1" and decimal_part >= 3 and decimal_part <= 7 %}
+                                        <i class="fas fa-star-half-alt text-warning"></i>
+                                    {% elif forloop.counter == int_rating|add:"1" and decimal_part > 7 %}
+                                        <i class="fas fa-star text-warning"></i>
+                                    {% else %}
+                                        <i class="far fa-star text-warning"></i>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endwith %}
+                            <small class="ms-1 rating-number">{{ film.avg_rating|floatformat:1 }}</small>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="card-footer text-center">
+                    <a href="{% url 'film_detail' film.id %}" class="btn btn-sm btn-outline-primary detail-btn">View Details</a>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+
+<!-- Latest blog posts -->
+<div class="section-header">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div class="d-flex align-items-center">
+            <div class="section-icon"><i class="fas fa-newspaper"></i></div>
+            <h2 class="section-title m-0">Latest Blog Posts</h2>
+        </div>
+        <a href="{% url 'blog_list' %}" class="btn btn-outline-primary btn-sm">View All <i class="fas fa-arrow-right ms-1"></i></a>
+    </div>
+</div>
+
+<div class="row mb-5">
+    {% for blog in latest_blogs %}
+        <div class="col-md-4 mb-3">
+            <div class="card blog-card h-100">
+                <div class="card-body">
+                    <div class="blog-meta mb-2">
+                        <small class="text-muted">
+                            <!-- Blog creation time -->
+                            <i class="far fa-calendar-alt me-1"></i> {{ blog.created_at|date:"M d, Y" }}
+                            <span class="mx-2">|</span>
+                            <!-- Author name -->
+                            <i class="far fa-user me-1"></i> {{ blog.author.username }}
+                        </small>
+                    </div>
+                    <h5 class="card-title blog-title">{{ blog.title }}</h5>
+                    <p class="card-text blog-excerpt">{{ blog.content|truncatechars:120 }}</p>
+                </div>
+                <div class="card-footer text-center blog-footer">
+                    <a href="{% url 'blog_detail' blog.id %}" class="btn btn-outline-primary">Read More <i class="fas fa-angle-right ms-1"></i></a>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+
+<!-- Movie list header -->
+<div class="film-list-header d-flex justify-content-between align-items-center mb-4">
+    <div class="d-flex align-items-center">
+        <div class="section-icon"><i class="fas fa-film"></i></div>
+        <h1 class="section-title m-0">Movie Collection</h1>
+    </div>
+    <!-- Check if user is logged in -->
+    {% if user.is_authenticated %}
+        <!-- Upload movie poster -->
+    <a href="{% url 'upload_film' %}" class="btn btn-success upload-btn">
+        <i class="fas fa-plus me-2"></i> Upload New Movie
+    </a>
+    {% endif %}
+</div>
+
+<!-- Filter options -->
+<div class="filter-card card mb-4">
+    <div class="card-body">
+        <form method="get" class="row g-3">
+            <div class="col-md-5">
+                <label for="category" class="form-label filter-label">Category</label>
+                <div class="select-wrapper">
+                    <select name="category" id="category" class="form-select filter-select">
+                        <option value="">All Categories</option>
+                        <!-- Loop through categories -->
+                        {% for category in categories %}
+                            <option value="{{ category.id }}" {% if selected_category == category.id|stringformat:"i" %}selected{% endif %}>
+                                {{ category.name }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-5">
+                <label for="year" class="form-label filter-label">Release Year</label>
+                <div class="select-wrapper">
+                    <select name="year" id="year" class="form-select filter-select">
+                        <option value="">All Years</option>
+                        <!-- Loop through years -->
+                        {% for year in years %}
+                            <option value="{{ year }}" {% if selected_year == year|stringformat:"i" %}selected{% endif %}>
+                                {{ year }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-2 d-flex align-items-end">
+                <button type="submit" class="btn btn-primary filter-btn w-100">
+                    <i class="fas fa-filter me-2"></i> Apply Filter
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Movie list -->
+<div class="row">
+    {% for film in page_obj %}
+        <div class="col-md-3 mb-4">
+            <div class="card film-card h-100">
+                <div class="film-poster-container">
+                <!-- Poster -->
+                    <img src="{% if film.poster %}{{ film.poster.url }}{% else %}/static/img/no-poster.jpg{% endif %}" class="card-img-top film-poster" alt="{{ film.title }}">
+                    <div class="film-card-overlay">
+                        <a href="{% url 'film_detail' film.id %}" class="btn btn-light btn-sm overlay-btn">
+                            <!-- View count -->
+                            <i class="fas fa-eye me-1"></i> View
+                        </a>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title film-title">{{ film.title }}</h5>
+                    <p class="card-text film-meta">
+                        <span class="film-year"><i class="far fa-calendar-alt me-1"></i> {{ film.release_year }}</span>
+                        <span class="mx-2">|</span>
+                        <span class="film-director"><i class="fas fa-film me-1"></i> {{ film.director }}</span>
+                    </p>
+                    <div class="rating mb-3">
+                    <!-- Star rating -->
+                        {% if film.avg_rating %}
+                            {% with int_rating=film.avg_rating|floatformat:"0"|add:"0" decimal_part=film.avg_rating|floatformat:1|slice:"-1:"|add:"0" %}
+                                {% for i in "12345" %}
+                                    {% if forloop.counter <= int_rating %}
+                                        <i class="fas fa-star text-warning"></i>
+                                    {% elif forloop.counter == int_rating|add:"1" and decimal_part >= 3 and decimal_part <= 7 %}
+                                        <i class="fas fa-star-half-alt text-warning"></i>
+                                    {% elif forloop.counter == int_rating|add:"1" and decimal_part > 7 %}
+                                        <i class="fas fa-star text-warning"></i>
+                                    {% else %}
+                                        <i class="far fa-star text-warning"></i>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endwith %}
+                            <span class="ms-1 rating-number">{{ film.avg_rating|floatformat:1 }}</span>
+                        {% else %}
+                            <span class="no-rating">No rating yet</span>
+                        {% endif %}
+                    </div>
+                    <a href="{% url 'film_detail' film.id %}" class="btn btn-primary w-100">View Details</a>
+                </div>
+            </div>
+        </div>
+    {% empty %}
+        <div class="col">
+            <div class="alert alert-info no-results">
+                <i class="fas fa-info-circle me-2"></i> No movies matching your search criteria were found.
+            </div>
+        </div>
+    {% endfor %}
+</div>
+
+<!-- Pagination -->
+    <!-- Pagination is only needed if there is more than one page -->
+{% if page_obj.has_other_pages %}
+    <!-- Pagination navigation container -->
+    <nav aria-label="Page navigation" class="mt-4 mb-5">
+        <ul class="pagination pagination-custom justify-content-center">
+        <!-- Check if there is a previous page -->
+            {% if page_obj.has_previous %}
+                <li class="page-item">
+                <!-- Preserve filter conditions during pagination -->
+                <!-- Go to the first page -->
+                    <a class="page-link" href="?page=1{% if selected_category %}&category={{ selected_category }}{% endif %}{% if selected_year %}&year={{ selected_year }}{% endif %}">
+                        <i class="fas fa-angle-double-left"></i>
+                    </a>
+                </li>
+                <li class="page-item">
+                <!-- Go to the previous page -->
+                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if selected_category %}&category={{ selected_category }}{% endif %}{% if selected_year %}&year={{ selected_year }}{% endif %}">
+                        <i class="fas fa-angle-left"></i>
+                    </a>
+                </li>
+            {% else %}
+                <!-- No previous page, disable buttons -->
+                <li class="page-item disabled">
+                    <a class="page-link" href="#">
+                        <i class="fas fa-angle-double-left"></i>
+                    </a>
+                </li>
+                <li class="page-item disabled">
+                    <a class="page-link" href="#">
+                        <i class="fas fa-angle-left"></i>
+                    </a>
+                </li>
+            {% endif %}
+            <!-- Loop through all page numbers -->
+            {% for i in page_obj.paginator.page_range %}
+                {% if page_obj.number == i %}
+                    <li class="page-item active">
+                        <a class="page-link" href="#">{{ i }}</a>
+                    </li>
+                    <!-- Only show two pages before and after the current page -->
+                {% elif i > page_obj.number|add:'-3' and i < page_obj.number|add:'3' %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ i }}{% if selected_category %}&category={{ selected_category }}{% endif %}{% if selected_year %}&year={{ selected_year }}{% endif %}">{{ i }}</a>
+                    </li>
+                {% endif %}
+            {% endfor %}
+
+            {% if page_obj.has_next %}
+                <!-- Next page and last page buttons -->
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.next_page_number }}{% if selected_category %}&category={{ selected_category }}{% endif %}{% if selected_year %}&year={{ selected_year }}{% endif %}">
+                        <i class="fas fa-angle-right"></i>
+                    </a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}{% if selected_category %}&category={{ selected_category }}{% endif %}{% if selected_year %}&year={{ selected_year }}{% endif %}">
+                        <i class="fas fa-angle-double-right"></i>
+                    </a>
+                </li>
+            {% else %}
+                <li class="page-item disabled">
+                    <a class="page-link" href="#">
+                        <i class="fas fa-angle-right"></i>
+                    </a>
+                </li>
+                <li class="page-item disabled">
+                    <a class="page-link" href="#">
+                        <i class="fas fa-angle-double-right"></i>
+                    </a>
+                </li>
+            {% endif %}
+        </ul>
+    </nav>
+{% endif %}
+{% endblock %}

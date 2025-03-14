@@ -1,0 +1,98 @@
+<!-- Inherit the base template -->
+{% extends 'base.html' %}
+<!-- Load static resources -->
+{% load static %}
+<!-- Replace the title in the base template -->
+{% block title %}Data Visualization - Movie Review Blog{% endblock %}
+<!-- Use custom CSS styles -->
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/visualization.css' %}">
+{% endblock %}
+<!-- Main content area -->
+{% block content %}
+<div class="visualization-container">
+  <div class="section-header mb-4">
+    <div class="d-flex align-items-center">
+      <div class="section-icon">
+        <i class="fas fa-chart-bar"></i>
+      </div>
+        <!-- Main title -->
+      <h1 class="section-title m-0">Movie Data Visualization</h1>
+    </div>
+      <!-- Subtitle -->
+    <p class="visualization-subtitle">Interactive insights into our movie collection and user ratings</p>
+  </div>
+
+  <div class="row">
+    <!-- Rating distribution chart -->
+    <div class="col-md-6 mb-4">
+      <div class="visualization-card">
+        <div class="visualization-card-header">
+          <h5><i class="fas fa-star me-2"></i>Rating Distribution</h5>
+        </div>
+        <div class="visualization-card-body">
+          <div class="chart-container">
+              <!-- Chart.js for rendering rating data -->
+            <canvas id="ratings-chart"></canvas>
+            <div class="chart-loading">
+                <!-- Loading animation -->
+              <div class="spinner"></div>
+            </div>
+          </div>
+          <div id="no-ratings-message" class="no-data-message d-none">
+            <div class="no-data-icon"><i class="fas fa-chart-line"></i></div>
+              <!-- No data available message -->
+            <p>No rating data available yet.</p>
+            <small>As users rate movies, this chart will populate with data.</small>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Most popular movies chart -->
+    <div class="col-md-6 mb-4">
+      <div class="visualization-card">
+        <div class="visualization-card-header">
+          <h5><i class="fas fa-trophy me-2"></i>Most Popular Movies</h5>
+        </div>
+        <div class="visualization-card-body">
+          <div class="chart-container">
+              <!-- Chart.js for rendering most popular movies data -->
+            <canvas id="popular-films-chart"></canvas>
+            <div class="chart-loading">
+              <div class="spinner"></div>
+            </div>
+          </div>
+          <div id="no-films-message" class="no-data-message d-none">
+            <div class="no-data-icon"><i class="fas fa-film"></i></div>
+            <p>No movie data available yet.</p>
+            <small>This chart will update as users review movies.</small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+    <!-- Info card -->
+  <div class="visualization-info-card">
+    <div class="info-icon">
+      <i class="fas fa-info-circle"></i>
+    </div>
+    <div class="info-content">
+      <h5>About This Data</h5>
+      <p>These charts are generated from real-time user activity on our platform. The rating distribution shows how many ratings each star level has received, while the popularity chart highlights the movies with the most reviews.</p>
+      <p class="mb-0">Data refreshes automatically each time you visit this page.</p>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  // Define these URL variables as global variables so they can be accessed by external JS files
+  const RATINGS_DATA_URL = "{% url 'ratings_data' %}";
+  const POPULAR_FILMS_DATA_URL = "{% url 'popular_films_data' %}";
+</script>
+<script src="{% static 'js/visualization.js' %}"></script>
+{% endblock %}

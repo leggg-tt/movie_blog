@@ -1,0 +1,186 @@
+<!-- Inherit the base template -->
+{% extends 'base.html' %}
+<!-- Load static resources -->
+{% load static %}
+<!-- Replace the title in the base template -->
+{% block title %}{{ film.title }} - Movie Review Blog{% endblock %}
+<!-- Use custom CSS styles -->
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/film_detail.css' %}">
+<link rel="stylesheet" href="{% static 'css/film_card.css' %}">
+<link rel="stylesheet" href="{% static 'css/review.css' %}">
+{% endblock %}
+<!-- Use custom JS scripts -->
+{% block extra_js %}
+<script src="{% static 'js/film_detail.js' %}"></script>
+{% endblock %}
+<!-- Main content area -->
+{% block content %}
+<div class="film-detail-container">
+    <div class="row">
+        <!-- Movie poster and basic information -->
+        <div class="col-md-4">
+            <div class="film-poster-container">
+                <img src="{% if film.poster %}{{ film.poster.url }}{% else %}/static/img/no-poster.jpg{% endif %}" class="img-fluid rounded" alt="{{ film.title }}">
+            </div>
+            <!-- Favorite button, disabled if already favorited -->
+            <button id="favorite-btn" class="btn favorite-btn w-100 {% if is_favorite %}favorited{% else %}not-favorited{% endif %}" 
+                    data-url="{% url 'toggle_favorite' film.id %}">
+            <!-- Heart icon -->
+                <i class="{% if is_favorite %}fas{% else %}far{% endif %} fa-heart"></i>
+            <!-- Add label, close button -->
+                {% if is_favorite %}Already saved{% else %}Collect{% endif %}
+            </button>
+        </div>
+        
+        <!-- Movie details -->
+        <div class="col-md-8">
+        <!-- Movie director and cast information -->
+            <h1 class="film-title">{{ film.title }} <span class="text-muted">({{ film.release_year }})</span></h1>
+            <div class="film-meta">
+                <p><strong>Director:</strong> {{ film.director }}</p>
+                <p><strong>Cast:</strong> {{ film.actors }}</p>
+            </div>
+            
+            <div class="film-category">
+                <h5 class="section-title">Categories</h5>
+                {% for category in film.categories.all %}
+                    <!-- Movie category tag with link to the corresponding category page -->
+                    <a href="{% url 'category_films' category.name %}" class="category-badge">{{ category.name }}</a>
+                {% endfor %}
+            </div>
+            <!-- Movie rating -->
+            <div class="mb-4">
+            <!-- <p>Debug: {{ film.average_rating }} / {{ film.average_rating|floatformat:2 }}</p> -->
+                <h5 class="section-title">Rating</h5>
+                <div class="rating-display">
+                <!-- Star rating display, commented out -->
+               <!--     <div class="rating-stars">
+                        {% with film.average_rating|floatformat:0 as full_stars %}
+                            {% for i in "12345" %}
+                                {% if forloop.counter <= full_stars %}
+                                    <i class="fas fa-star"></i>
+                                {% elif forloop.counter == full_stars|add:"1" and film.average_rating|floatformat:1|slice:"-1:" != "0" %}
+                                    <i class="fas fa-star-half-alt"></i>
+                                {% else %}
+                                    <i class="far fa-star"></i>
+                                {% endif %}
+                            {% endfor %}
+                        {% endwith %}
+                    </div> -->
+                    <!-- Movie rating and view count -->
+                    <div>
+                        <span id="average-rating" class="fw-bold">{{ film.average_rating|floatformat:1 }}</span>/5
+                        (<span id="rating-count">{{ film.review_count }}</span> comments)
+                    </div>
+                </div>
+            </div>
+            <!-- Movie description -->
+            <div class="mb-4">
+                <h5 class="section-title">Introduction</h5>
+                <div class="film-description">
+                    <p>{{ film.description }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Reviews section -->
+<div class="card">
+    <div class="card-header bg-primary text-white py-3">
+        <h5 class="m-0 fw-bold">Reviews & Comments</h5>
+    </div>
+    <div class="card-body">
+        {% if user.is_authenticated %}
+            <div class="review-form-container">
+                <h5 class="mb-3">Write a Review</h5>
+                <!-- Form submission -->
+                <form id="review-form" method="post" action="{% url 'add_review' film.id %}">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="{{ form.title.id_for_label }}" class="form-label">Title</label>
+                        {{ form.title }}
+                    </div>
+                    <div class="mb-3">
+                        <label for="{{ form.content.id_for_label }}" class="form-label">Content</label>
+                        {{ form.content }}
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Rating</label>
+                        <!-- Hidden rating input -->
+                        <input type="hidden" name="rating" id="id_rating_hidden" value="0">
+                        <div class="star-rating-container">
+                            <div class="star-rating">
+                                <i class="far fa-star star-rating-item" data-rating="1"></i>
+                                <i class="far fa-star star-rating-item" data-rating="2"></i>
+                                <i class="far fa-star star-rating-item" data-rating="3"></i>
+                                <i class="far fa-star star-rating-item" data-rating="4"></i>
+                                <i class="far fa-star star-rating-item" data-rating="5"></i>
+                                <span class="ms-2 selected-rating">0</span><span class="ms-1">stars</span>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit a review</button>
+                </form>
+                <div id="review-success" class="alert alert-success mt-3" style="display:none;">
+                    Comment submitted successfully!
+                </div>
+            </div>
+        {% else %}
+            <div class="alert alert-info">
+                Please <a href="{% url 'login' %}">log in</a> to leave a comment.
+            </div>
+        {% endif %}
+        
+        <hr>
+        
+        <!-- Reviews list -->
+        <div id="reviews-list">
+            {% for review in reviews %}
+                <div class="review-card">
+                    <div class="review-header d-flex justify-content-between align-items-center">
+                        <h6 class="m-0 fw-bold">{{ review.title }}</h6>
+                        <div>
+                        <!-- Render review stars -->
+                            {% for i in "12345" %}
+                                {% if forloop.counter <= review.rating %}
+                                    <i class="fas fa-star text-warning"></i>
+                                {% else %}
+                                    <i class="far fa-star text-warning"></i>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="review-body">
+                        <p>{{ review.content }}</p>
+                    </div>
+                    <div class="review-footer">
+                        <div>
+                            <small class="text-muted">{{ review.user.username }} - {{ review.created_at|date:"Y-m-d H:i" }}</small>
+                        </div>
+                        <!-- Modified like button -->
+                        {% if user.is_authenticated %}
+                            <button class="btn like-button {% if review.is_liked_by_user %}liked{% else %}not-liked{% endif %}" 
+                                    data-review-id="{{ review.id }}">
+                                <i class="fas fa-thumbs-up"></i>
+                                <span class="like-count">{{ review.like_count }}</span>
+                            </button>
+                        {% else %}
+                            <button class="btn like-button disabled" disabled>
+                                <i class="fas fa-thumbs-up"></i>
+                                <span class="like-count">{{ review.like_count }}</span>
+                            </button>
+                        {% endif %}
+                    </div>
+                </div>
+            {% empty %}
+                <div class="alert alert-info">
+                    No comments yet. Be the first to leave a review!
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+    
+{% endblock %}

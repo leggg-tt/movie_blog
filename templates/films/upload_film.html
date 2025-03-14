@@ -1,0 +1,111 @@
+<!-- Inherit the base template -->
+{% extends 'base.html' %}
+<!-- Load static resources -->
+{% load static %}
+<!-- Replace the title in the base template -->
+{% block title %}Upload Movie - Movie Review Blog{% endblock %}
+<!-- Use custom CSS styles -->
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/upload_film.css' %}">
+{% endblock %}
+<!-- Main content area -->
+{% block content %}
+    <!-- Upload area container -->
+<div class="film-upload-container">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="card upload-card">
+                <div class="card-header bg-primary text-white py-3">
+                    <h4 class="m-0 fw-bold">Upload a New Movie</h4>
+                </div>
+                <div class="card-body p-4">
+                    <div class="upload-intro mb-4">
+                        <p>Share your favorite movies with the community! Please provide accurate information.</p>
+                    </div>
+                    <!-- Submission form -->
+                    <form method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        
+                        <div class="mb-4">
+                        <!-- Form variable rendering and error messages -->
+                            <label for="{{ form.title.id_for_label }}" class="section-title">Movie Title*</label>
+                            {{ form.title }}
+                            {% if form.title.errors %}
+                                <div class="text-danger mt-2">{{ form.title.errors }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="mb-4">
+                        <!-- Form variable rendering and error messages -->
+                            <label for="{{ form.director.id_for_label }}" class="section-title">Director*</label>
+                            {{ form.director }}
+                            {% if form.director.errors %}
+                                <div class="text-danger mt-2">{{ form.director.errors }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="mb-4">
+                        <!-- Form variable rendering and error messages -->
+                            <label for="{{ form.actors.id_for_label }}" class="section-title">Actors*</label>
+                            {{ form.actors }}
+                            <small class="form-text text-muted">Separate multiple actors with commas</small>
+                            {% if form.actors.errors %}
+                                <div class="text-danger mt-2">{{ form.actors.errors }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                            <!-- Form variable rendering and error messages -->
+                                <label for="{{ form.release_year.id_for_label }}" class="section-title">Release Year*</label>
+                                {{ form.release_year }}
+                                {% if form.release_year.errors %}
+                                    <div class="text-danger mt-2">{{ form.release_year.errors }}</div>
+                                {% endif %}
+                            </div>
+                            <div class="col-md-6">
+                            <!-- Form variable rendering and error messages -->
+                                <label for="{{ form.categories.id_for_label }}" class="section-title">Categories*</label>
+                                {{ form.categories }}
+                                <small class="form-text text-muted">Hold Ctrl (or Cmd) to select multiple</small>
+                                {% if form.categories.errors %}
+                                    <div class="text-danger mt-2">{{ form.categories.errors }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label for="{{ form.poster.id_for_label }}" class="section-title">Movie Poster</label>
+                        <!-- Form variable rendering and error messages -->
+                            <div class="poster-upload-container">
+                                {{ form.poster }}
+                                <small class="form-text text-muted">Recommended size: 300x450 pixels</small>
+                                {% if form.poster.errors %}
+                                    <div class="text-danger mt-2">{{ form.poster.errors }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        
+                        <div class="mb-4">
+                        <!-- Form variable rendering and error messages -->
+                            <label for="{{ form.description.id_for_label }}" class="section-title">Description*</label>
+                            {{ form.description }}
+                            {% if form.description.errors %}
+                                <div class="text-danger mt-2">{{ form.description.errors }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="form-actions mt-4">
+                            <button type="submit" class="btn btn-primary submit-btn">Upload Movie</button>
+                            <a href="{% url 'film_list' %}" class="btn btn-secondary cancel-btn ms-2">Cancel</a>
+                        </div>
+                    </form>
+                </div>
+                <div class="card-footer text-muted py-3">
+                    <small>* Required fields</small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
