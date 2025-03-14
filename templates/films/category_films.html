@@ -1,0 +1,100 @@
+<!-- Inherit the base template -->
+{% extends 'base.html' %}
+<!-- Load static resources -->
+{% load static %}
+<!-- Replace the title in the base template -->
+{% block title %}{{ category.name }} - Movie Categories{% endblock %}
+<!-- Use custom CSS styles -->
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/film_card.css' %}">
+<link rel="stylesheet" href="{% static 'css/category.css' %}">
+{% endblock %}
+<!-- Main content area -->
+{% block content %}
+    <!-- Category container -->
+<div class="category-container">
+  <!-- Category header -->
+  <div class="category-header">
+    <div class="d-flex align-items-center">
+      <div class="section-icon">
+        <i class="fas fa-film"></i>
+      </div>
+      <h1 class="section-title mb-0">{{ category.name }} Movies</h1>
+    </div>
+    <p class="category-subtitle">Browse our collection of {{ category.name|lower }} films</p>
+  </div>
+
+  <!-- Movie list -->
+  <div class="row">
+  <!-- Loop through all movies -->
+    {% for film in films %}
+        <!-- Movie card, check if there is a poster -->
+      <div class="col-md-3 mb-4">
+        <div class="card film-card h-100">
+          <div class="film-poster-container">
+            <img src="{% if film.poster %}{{ film.poster.url }}{% else %}/static/img/no-poster.jpg{% endif %}" class="card-img-top film-poster" alt="{{ film.title }}">
+          <!-- Overlay with view button -->
+            <div class="film-card-overlay">
+              <a href="{% url 'film_detail' film.id %}" class="btn btn-light btn-sm overlay-btn">
+                <i class="fas fa-eye me-1"></i> View
+              </a>
+            </div>
+          </div>
+        <!-- Movie card body: title, director, year -->
+          <div class="card-body">
+            <h5 class="card-title film-title">{{ film.title }}</h5>
+            <p class="card-text film-meta">
+              <span class="film-year"><i class="far fa-calendar-alt me-1"></i> {{ film.release_year }}</span>
+              <span class="mx-2">|</span>
+              <span class="film-director"><i class="fas fa-film me-1"></i> {{ film.director }}</span>
+            </p>
+          <!-- Movie rating -->
+            <div class="rating mb-3">
+              {% if film.avg_rating %}
+                {% with film.avg_rating|floatformat:"0"|add:"0" as int_rating %}
+                  {% for i in "12345" %}
+                    {% if forloop.counter <= int_rating %}
+                      <i class="fas fa-star text-warning"></i>
+                    {% else %}
+                      <i class="far fa-star text-warning"></i>
+                    {% endif %}
+                  {% endfor %}
+                  <span class="ms-1 rating-number">{{ film.avg_rating|floatformat:1 }}</span>
+                {% endwith %}
+              {% else %}
+                <span class="no-rating">No rating yet</span>
+              {% endif %}
+            </div>
+          <!-- Card footer view button -->
+            <a href="{% url 'film_detail' film.id %}" class="btn btn-primary w-100">View Details</a>
+          </div>
+        </div>
+      </div>
+        <!-- No movies case -->
+    {% empty %}
+      <div class="col">
+        <div class="empty-category">
+          <div class="empty-icon">
+            <i class="far fa-folder-open"></i>
+          </div>
+          <h3>No Movies Found</h3>
+          <p>There are currently no movies in the {{ category.name|lower }} category.</p>
+          <a href="{% url 'film_list' %}" class="btn btn-primary browse-btn">
+            <i class="fas fa-film me-2"></i> Browse All Movies
+          </a>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+
+  <!-- Back button -->
+  <div class="mt-4 back-link-container">
+    <a href="{% url 'film_list' %}" class="back-link">
+      <div class="back-icon">
+        <i class="fas fa-arrow-left"></i>
+      </div>
+      <span>Back to All Movies</span>
+    </a>
+  </div>
+</div>
+{% endblock %}
