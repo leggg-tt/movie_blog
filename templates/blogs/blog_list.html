@@ -1,0 +1,155 @@
+<!-- inherit the base page -->
+{% extends 'base.html' %}
+<!-- load the static source -->
+{% load static %}
+{% block title %}Movie Reviews - Community Discussion{% endblock %}
+<!-- the css style of blog_list -->
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/blog.css' %}">
+<link rel="stylesheet" href="{% static 'css/blog_list.css' %}">
+{% endblock %}
+
+<!-- main area -->
+{% block content %}
+<div class="blog-header text-center">
+    <div class="container">
+        <h1 class="display-4 fw-bold mb-3">Community Discussion</h1>
+        <p class="lead mb-4">Share your life!</p>
+        {% if user.is_authenticated %}
+            <a href="{% url 'create_blog' %}" class="btn-create">
+                <i class="fas fa-pen-fancy me-2"></i>Write a blog
+            </a>
+        {% else %}
+            <p class="login-prompt">
+                <a href="{% url 'login' %}" class="text-decoration-none text-white fw-bold">Sign in</a> to share your life
+            </p>
+        {% endif %}
+    </div>
+</div>
+<!-- content of the page -->
+<div class="container">
+    <div class="row">
+        {% for blog in page_obj %}
+            <div class="col-lg-12 mb-4">
+                <div class="card blog-card">
+                    <div class="card-body p-4">
+                        <h2 class="card-title h3 mb-3">{{ blog.title }}</h2>
+                        <div class="d-flex justify-content-between align-items-center mb-3 blog-meta">
+                            <span>
+                                <i class="fas fa-user-circle"></i> {{ blog.user.username }}
+                            </span>
+                            <span>
+                                <i class="far fa-calendar-alt"></i> {{ blog.created_at|date:"Y-m-d H:i" }}
+                            </span>
+                        </div>
+                        <div class="d-flex align-items-center mb-3 movie-info">
+                            <span class="category-badge me-3">
+                                <i class="fas fa-film"></i> {{ blog.get_category_display }}
+                            </span>
+                        <div class="blog-content">
+                            {{ blog.content|truncatewords:50 }}
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <a href="{% url 'blog_detail' blog.id %}" class="btn-read-more">
+                                Read more <i class="fas fa-arrow-right ms-1"></i>
+                            </a>
+                            <span class="comment-badge">
+                                <i class="far fa-comment"></i> {{ blog.comment_count }} Comments
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <div class="col-md-8 mx-auto">
+                <div class="empty-state">
+                    <img src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.0/icons/film.svg" width="80" height="80" class="mb-4" alt="No blogs">
+                    <h3 class="mb-3">No reviews yet</h3>
+                    <p class="text-muted mb-4">Be the first to share your lifestyle!</p>
+                    {% if user.is_authenticated %}
+                        <a href="{% url 'create_blog' %}" class="btn-create">
+                            <i class="fas fa-film me-2"></i>Write the First Blog
+                        </a>
+                    {% else %}
+                        <a href="{% url 'login' %}" class="btn-create">
+                            <i class="fas fa-sign-in-alt me-2"></i>Sign in to Write
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <!-- pagination -->
+    {% if page_obj.has_other_pages %}
+        <nav aria-label="Page navigation" class="my-5">
+            <ul class="pagination pagination-custom justify-content-center">
+                {% if page_obj.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page=1">
+                            <i class="fas fa-angle-double-left"></i> First
+                        </a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.previous_page_number }}">
+                            <i class="fas fa-angle-left"></i> Previous
+                        </a>
+                    </li>
+                {% else %}
+                    <li class="page-item disabled">
+                        <a class="page-link" href="#">
+                            <i class="fas fa-angle-double-left"></i> First
+                        </a>
+                    </li>
+                    <li class="page-item disabled">
+                        <a class="page-link" href="#">
+                            <i class="fas fa-angle-left"></i> Previous
+                        </a>
+                    </li>
+                {% endif %}
+
+                {% for i in page_obj.paginator.page_range %}
+                    {% if page_obj.number == i %}
+                        <li class="page-item active">
+                            <a class="page-link" href="#">{{ i }}</a>
+                        </li>
+                    {% elif i > page_obj.number|add:'-3' and i < page_obj.number|add:'3' %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ i }}">{{ i }}</a>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+
+                {% if page_obj.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.next_page_number }}">
+                            Next <i class="fas fa-angle-right"></i>
+                        </a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">
+                            Last <i class="fas fa-angle-double-right"></i>
+                        </a>
+                    </li>
+                {% else %}
+                    <li class="page-item disabled">
+                        <a class="page-link" href="#">
+                            Next <i class="fas fa-angle-right"></i>
+                        </a>
+                    </li>
+                    <li class="page-item disabled">
+                        <a class="page-link" href="#">
+                            Last <i class="fas fa-angle-double-right"></i>
+                        </a>
+                    </li>
+                {% endif %}
+            </ul>
+        </nav>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+{% endblock %}
+</div>
