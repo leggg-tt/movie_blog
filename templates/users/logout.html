@@ -1,0 +1,47 @@
+<!-- inherit the base page -->
+{% extends 'base.html' %}
+<!-- load the static source -->
+{% load static %}
+<!-- change the title of the base page -->
+{% block title %}Logged out - Movie Review Blog{% endblock %}
+<!-- utilize its own css style -->
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/logout.css' %}">
+{% endblock %}
+<!-- utilize its own js style -->
+{% block extra_js %}
+<script src="{% static 'js/auth.js' %}"></script>
+{% endblock %}
+<!-- main area of the page -->
+{% block content %}
+<div class="logout-container">
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+            <div class="card logout-card">
+                <div class="logout-card-header">
+                    <div class="logout-icon">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                </div>
+                <div class="card-body text-center logout-card-body">
+                    <h2 class="logout-title">You have successfully logged out</h2>
+                    <p class="logout-message">Thank you for visiting our Movie Review Blog!</p>
+                    <div class="logout-divider">
+                        <span><i class="fas fa-film"></i></span>
+                    </div>
+                    <div class="logout-actions">
+                        <!-- login one more time  -->
+                        <a href="{% url 'login' %}" class="btn btn-primary logout-btn-login">
+                            <i class="fas fa-sign-in-alt me-2"></i>Re-login
+                        </a>
+                        <!-- jump to the home page -->
+                        <a href="{% url 'film_list' %}" class="btn btn-secondary logout-btn-home">
+                            <i class="fas fa-home me-2"></i>Back to Home
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

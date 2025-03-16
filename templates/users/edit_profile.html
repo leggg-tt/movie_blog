@@ -1,0 +1,121 @@
+<!-- inherit the base page -->
+{% extends 'base.html' %}
+<!-- load the static source -->
+{% load static %}
+<!-- change the title of the base page -->
+{% block title %}Edit Profile - Movie Review Blog{% endblock %}
+<!-- utilize its own css style -->
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/edit_profile.css' %}">
+{% endblock %}
+
+<!-- main area -->
+{% block content %}
+<div class="edit-profile-container">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <!-- personal information detail card -->
+            <div class="card edit-profile-card">
+                <div class="card-header edit-profile-header">
+                    <!-- header -->
+                    <div class="d-flex align-items-center">
+                        <div class="header-icon">
+                            <i class="fas fa-user-edit"></i>
+                        </div>
+                        <h4 class="m-0">Edit Profile</h4>
+                    </div>
+                </div>
+                <div class="card-body edit-profile-body">
+                    <!-- personal detail editable table -->
+                    <form method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        
+                        <div class="row mb-4 profile-info-section">
+                            <div class="col-md-4 text-center">
+                                <div class="avatar-upload-container">
+                                    <div class="avatar-preview">
+                                        <img src="{{ user.profile.avatar.url }}" class="avatar-md" alt="{{ user.username }}" id="avatar-preview-image">
+                                        <div class="avatar-overlay">
+                                            <i class="fas fa-camera"></i>
+                                        </div>
+                                    </div>
+                                    <p class="text-muted avatar-caption">Current avatar</p>
+                                </div>
+                            </div>
+                            <div class="col-md-8">
+                                <div class="form-section account-info">
+                                    <h5 class="section-title">
+                                        <i class="fas fa-user me-2"></i>Account Information
+                                    </h5>
+                                    <div class="mb-3">
+                                        <!-- username and the email input box  -->
+                                        <label for="{{ u_form.username.id_for_label }}" class="form-label">Username</label>
+                                        {{ u_form.username }}
+                                        {% if u_form.username.errors %}
+                                            <div class="text-danger">{{ u_form.username.errors }}</div>
+                                        {% endif %}
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="{{ u_form.email.id_for_label }}" class="form-label">Email Address</label>
+                                        {{ u_form.email }}
+                                        {% if u_form.email.errors %}
+                                            <div class="text-danger">{{ u_form.email.errors }}</div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-section personal-info">
+                            <h5 class="section-title">
+                                <i class="fas fa-address-card me-2"></i>Personal Data
+                            </h5>
+                            <div class="mb-4">
+                                <!-- profile of the user -->
+                                <label for="{{ p_form.bio.id_for_label }}" class="form-label">Personal Profile</label>
+                                {{ p_form.bio }}
+                                <small class="text-muted bio-hint">Tell us about yourself, your favorite movies, genres, and more.</small>
+                                {% if p_form.bio.errors %}
+                                    <div class="text-danger">{{ p_form.bio.errors }}</div>
+                                {% endif %}
+                            </div>
+                            
+                            <div class="mb-4 avatar-upload-field">
+                                <!-- upload the avatar -->
+                                <label for="{{ p_form.avatar.id_for_label }}" class="form-label">Change your profile picture</label>
+                                <div class="custom-file-container">
+                                    {{ p_form.avatar }}
+                                    <label for="{{ p_form.avatar.id_for_label }}" class="custom-file-label">
+                                        <i class="fas fa-upload me-2"></i>Choose file
+                                    </label>
+                                    <small class="text-muted file-hint">Recommended: Square image, at least 200x200 pixels.</small>
+                                </div>
+                                {% if p_form.avatar.errors %}
+                                    <div class="text-danger">{{ p_form.avatar.errors }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-primary save-btn">
+                                <i class="fas fa-save me-2"></i>Save changes
+                            </button>
+                            <a href="{% url 'profile' %}" class="btn btn-secondary cancel-btn">
+                                <i class="fas fa-times me-2"></i>Cancel
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // pass the table id to the js files
+    const avatarInputId = '{{ p_form.avatar.id_for_label }}';
+</script>
+<script src="{% static 'js/edit_profile.js' %}"></script>
+{% endblock %}

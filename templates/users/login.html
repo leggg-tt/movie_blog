@@ -1,0 +1,75 @@
+<!-- inherit the base page -->
+{% extends 'base.html' %}
+<!-- load the static source -->
+{% load static %}
+<!-- change the title of the base page-->
+{% block title %}Login - Movie Review Blog{% endblock %}
+<!-- utilize its own css style -->
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/auth.css' %}">
+{% endblock %}
+<!-- utilize its own js style -->
+{% block extra_js %}
+<script src="{% static 'js/auth.js' %}"></script>
+{% endblock %}
+<!-- main area -->
+{% block content %}
+<div class="row justify-content-center py-5">
+    <div class="col-lg-5 col-md-7">
+        <div class="text-center mb-4">
+            <h2 class="fw-bold text-dark">Welcome Back!</h2>
+            <p class="text-muted">Sign in to continue to Movie Review Blog</p>
+        </div>
+
+        <div class="auth-card card">
+            <div class="auth-header card-header text-white">
+                <h4 class="m-0 fw-bold"><i class="fas fa-sign-in-alt me-2"></i>Login to Your Account</h4>
+            </div>
+            <div class="card-body p-4">
+            <!-- table of the login operation -->
+                <form method="POST">
+                    {% csrf_token %}
+                     <!-- show the error message  -->
+                    {% if form.non_field_errors %}
+                    <div class="alert alert-danger">
+                        {% for error in form.non_field_errors %}
+                            {{ error }}
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+
+                    <div class="mb-4">
+                    <!-- username input box  -->
+                        <label for="{{ form.username.id_for_label }}" class="form-label">
+                            <i class="fas fa-user me-2"></i>Username
+                        </label>
+                    <!-- fill in the user table -->
+                        {{ form.username }}
+                        {% if form.username.errors %}
+                            <div class="text-danger mt-1 small">{{ form.username.errors }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="mb-4">
+                    <!-- password input box -->
+                        <label for="{{ form.password.id_for_label }}" class="form-label">
+                            <i class="fas fa-lock me-2"></i>Password
+                        </label>
+                        {{ form.password }}
+                        {% if form.password.errors %}
+                            <div class="text-danger mt-1 small">{{ form.password.errors }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="d-grid gap-2 mt-4">
+                        <button type="submit" class="btn btn-primary auth-btn auth-btn-primary">
+                            <i class="fas fa-sign-in-alt me-2"></i>Sign In
+                        </button>
+                    </div>
+                </form>
+            </div>
+            <div class="auth-footer card-footer text-center">
+                <p class="mb-0">Don't have an account? <a href="{% url 'register' %}" class="auth-link">Create Account</a></p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

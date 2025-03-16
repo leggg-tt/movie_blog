@@ -1,0 +1,110 @@
+<!-- inherit the base page -->
+{% extends 'base.html' %}
+<!-- load the static source -->
+{% load static %}
+<!-- change the title of the base page -->
+{% block title %}My Collection - Movie Review Blog{% endblock %}
+<!-- utilize its own css style -->
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/favorites.css' %}">
+<link rel="stylesheet" href="{% static 'css/film_card.css' %}">
+{% endblock %}
+
+<!-- main area -->
+{% block content %}
+<!-- title of the favorites page -->
+<div class="favorites-container">
+    <div class="favorites-header">
+        <div class="d-flex align-items-center">
+            <div class="section-icon">
+                <i class="fas fa-heart"></i>
+            </div>
+            <h1 class="section-title mb-0">My Favorite Movies</h1>
+        </div>
+        <p class="favorites-subtitle">Your personal collection of beloved films</p>
+    </div>
+
+    <div class="row">
+        <!-- traversal favorite movies -->
+        {% for favorite in favorites %}
+            <div class="col-md-3 mb-4">
+                <div class="card film-card favorite-card h-100">
+                    <div class="film-poster-container">
+                        <!-- show the posters -->
+                        <img src="{% if favorite.film.poster %}{{ favorite.film.poster.url }}{% else %}/static/img/no-poster.jpg{% endif %}" class="card-img-top film-poster" alt="{{ favorite.film.title }}">
+                        <!-- button of  looking  details of the film-->
+                        <div class="film-card-overlay">
+                            <a href="{% url 'film_detail' favorite.film.id %}" class="btn btn-light btn-sm overlay-btn">
+                                <i class="fas fa-eye me-1"></i> View
+                            </a>
+                        </div>
+                        <div class="favorite-badge">
+                            <i class="fas fa-heart"></i>
+                        </div>
+                    </div>
+                <!-- movie details -->
+                    <div class="card-body">
+                        <h5 class="card-title film-title">{{ favorite.film.title }}</h5>
+                        <div class="film-meta">
+                            <span class="year"><i class="far fa-calendar-alt me-1"></i>{{ favorite.film.release_year }}</span>
+                            <span class="director"><i class="fas fa-film me-1"></i>{{ favorite.film.director }}</span>
+                        </div>
+                        <!-- time put it into favorite -->
+                        <div class="favorite-date">
+                            <i class="fas fa-bookmark me-1"></i> Added: {{ favorite.created_at|date:"M d, Y" }}
+                        </div>
+                    </div>
+                <!-- cancel the favourite -->
+                    <div class="card-footer favorite-footer">
+                        <div class="d-flex justify-content-between">
+                            <a href="{% url 'film_detail' favorite.film.id %}" class="btn btn-primary detail-btn">
+                                <i class="fas fa-info-circle me-1"></i> Details
+                            </a>
+                            <button class="btn btn-danger remove-btn remove-favorite" data-id="{{ favorite.film.id }}">
+                                <i class="fas fa-trash-alt me-1"></i> Remove
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <div class="col">
+                <div class="empty-favorites">
+                    <div class="empty-icon">
+                        <i class="far fa-heart"></i>
+                    </div>
+                    <h3>Your Collection is Empty</h3>
+                    <p>You haven't collected any movies yet.</p>
+                    <a href="{% url 'film_list' %}" class="btn btn-primary browse-btn">
+                        <i class="fas fa-film me-2"></i> Browse Movies
+                    </a>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // pass the  CSRF token to JS files
+    const csrfToken = '{{ csrf_token }}';
+    
+    // 如果需要在空收藏时显示的 HTML
+    const emptyFavoritesHTML = `
+        <div class="col">
+            <div class="empty-favorites">
+                <div class="empty-icon">
+                    <i class="far fa-heart"></i>
+                </div>
+                <h3>Your Collection is Empty</h3>
+                <p>You haven't favorited any movies yet.</p>
+                <a href="{% url 'film_list' %}" class="btn btn-primary browse-btn">
+                    <i class="fas fa-film me-2"></i> Browse Movies
+                </a>
+            </div>
+        </div>
+    `;
+</script>
+<script src="{% static 'js/favorites.js' %}"></script>
+{% endblock %}

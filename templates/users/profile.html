@@ -1,0 +1,118 @@
+<!-- inherit the base page -->
+{% extends 'base.html' %}
+<!-- load the static source -->
+{% load static %}
+<!-- change the title of the base page-->
+{% block title %}Personal Homepage - {{ user.username }}{% endblock %}
+<!-- utilize its own css style -->
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/profile.css' %}">
+{% endblock %}
+<!-- main area of the page -->
+{% block content %}
+<div class="profile-container">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card profile-card">
+                <div class="card-header profile-header">
+                    <div class="d-flex align-items-center">
+                        <div class="profile-icon">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <h4 class="m-0">Personal Data</h4>
+                    </div>
+                </div>
+                <div class="card-body text-center">
+                    <div class="avatar-container mb-4">
+                        <!-- avatar -->
+                        <img src="{{ user.profile.avatar.url }}" class="avatar-profile" alt="{{ user.username }}">
+                    </div>
+                    <h4 class="username-title">{{ user.username }}</h4>
+                    <p class="user-email"><i class="fas fa-envelope me-2"></i>{{ user.email }}</p>
+                    <div class="user-bio mb-4">
+                        <!-- profile of the user -->
+                        <p>{{ user.profile.bio }}</p>
+                    </div>
+                    <!-- jump button -->
+                    <a href="{% url 'edit_profile' %}" class="btn btn-outline-primary profile-edit-btn">
+                        <i class="fas fa-edit me-2"></i>Edit information
+                    </a>
+                </div>
+            </div>
+        </div>
+        <!-- static the users' operation-->
+        <div class="col-md-8">
+            <div class="card profile-card">
+                <div class="card-header profile-header">
+                    <div class="d-flex align-items-center">
+                        <div class="profile-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <h4 class="m-0">Event Overview</h4>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <!-- number of the movie comment -->
+                    <div class="row activity-stats mb-4">
+                        <div class="col-md-4 text-center mb-3">
+                            <div class="stat-card">
+                                <div class="stat-icon">
+                                    <i class="fas fa-star"></i>
+                                </div>
+                                <h2 class="stat-number">{{ user.film_reviews.count }}</h2>
+                                <p class="stat-label">Movie Reviews</p>
+                            </div>
+                        </div>
+                        <!-- the numer of favorites  -->
+                        <div class="col-md-4 text-center mb-3">
+                            <div class="stat-card">
+                                <div class="stat-icon">
+                                    <i class="fas fa-heart"></i>
+                                </div>
+                                <h2 class="stat-number">{{ user.favorites.count }}</h2>
+                                <p class="stat-label">Favorite Movies</p>
+                            </div>
+                        </div>
+                        <!-- the number of the blogs -->
+                        <div class="col-md-4 text-center mb-3">
+                            <div class="stat-card">
+                                <div class="stat-icon">
+                                    <i class="fas fa-pen"></i>
+                                </div>
+                                <h2 class="stat-number">{{ user.blogs.count }}</h2>
+                                <p class="stat-label">Blog Posts</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="profile-links">
+                        <!-- user favorites -->
+                        <a href="{% url 'favorites' %}" class="profile-link-item">
+                            <div class="d-flex align-items-center">
+                                <div class="link-icon">
+                                    <i class="fas fa-bookmark"></i>
+                                </div>
+                                <div class="link-text">
+                                    My favorite movies
+                                    <span class="link-arrow"><i class="fas fa-chevron-right"></i></span>
+                                </div>
+                            </div>
+                        </a>
+                        <!-- blog articles -->
+                        <a href="{% url 'my_blogs' %}" class="profile-link-item">
+                            <div class="d-flex align-items-center">
+                                <div class="link-icon">
+                                    <i class="fas fa-file-alt"></i>
+                                </div>
+                                <div class="link-text">
+                                    My Blog Articles
+                                    <span class="link-arrow"><i class="fas fa-chevron-right"></i></span>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
