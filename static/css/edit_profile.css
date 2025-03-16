@@ -1,0 +1,207 @@
+.edit-profile-container {
+    padding: 30px 0;
+}
+
+.edit-profile-card {
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.edit-profile-card:hover {
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+}
+
+.edit-profile-header {
+    background: linear-gradient(135deg, #4e73df 0%, #224abe 100%);
+    color: white;
+    padding: 20px;
+    border-bottom: none;
+}
+
+.header-icon {
+    background-color: rgba(255, 255, 255, 0.2);
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 15px;
+    font-size: 1.1rem;
+}
+
+.edit-profile-body {
+    padding: 30px;
+}
+
+/* avatar uploading area */
+.avatar-upload-container {
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.avatar-preview {
+    position: relative;
+    display: inline-block;
+    margin-bottom: 10px;
+    cursor: pointer;
+    border-radius: 50%;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.avatar-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    border-radius: 50%;
+}
+
+.avatar-overlay i {
+    color: white;
+    font-size: 2rem;
+}
+
+.avatar-preview:hover .avatar-overlay {
+    opacity: 1;
+}
+
+.avatar-preview:hover .avatar-md {
+    filter: blur(2px);
+}
+
+.avatar-caption {
+    margin-top: 10px;
+    font-size: 0.9rem;
+}
+
+/* form area style */
+.form-section {
+    background-color: #f8f9fa;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 25px;
+}
+
+.bio-hint {
+    margin-top: 8px;
+    display: block;
+}
+
+/* customized the uploading style of the files*/
+.custom-file-container {
+    position: relative;
+    margin-bottom: 10px;
+}
+
+.custom-file-container input[type="file"] {
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+    z-index: 10;
+}
+
+.custom-file-label {
+    display: block;
+    background-color: #f8f9fa;
+    border: 2px dashed #ced4da;
+    border-radius: 10px;
+    padding: 15px 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s;
+    margin: 0;
+    color: #6c757d;
+}
+
+.custom-file-label:hover {
+    background-color: #e9ecef;
+    border-color: #adb5bd;
+}
+
+.file-selected {
+    background-color: #e8f4ff;
+    border-color: #4e73df;
+    color: #4e73df;
+}
+
+.file-hint {
+    display: block;
+    margin-top: 8px;
+}
+
+/* from operating button */
+.form-actions {
+    display: flex;
+    gap: 15px;
+    margin-top: 30px;
+}
+
+.save-btn, .cancel-btn {
+    padding: 12px 25px;
+    border-radius: 50px;
+    font-weight: 600;
+    transition: all 0.3s;
+}
+
+.save-btn {
+    background: linear-gradient(135deg, #4e73df 0%, #224abe 100%);
+    border: none;
+    box-shadow: 0 5px 15px rgba(78, 115, 223, 0.2);
+}
+
+.save-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(78, 115, 223, 0.3);
+}
+
+.cancel-btn {
+    background-color: white;
+    color: #6c757d;
+    border: 1px solid #ced4da;
+}
+
+.cancel-btn:hover {
+    background-color: #f8f9fa;
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+}
+
+/*  beautify the personal information area */
+.profile-info-section {
+    background-color: white;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+}
+
+/* responsive adjustment */
+@media (max-width: 767.98px) {
+    .avatar-upload-container {
+        margin-bottom: 30px;
+    }
+
+    .form-actions {
+        flex-direction: column;
+    }
+
+    .save-btn, .cancel-btn {
+        width: 100%;
+    }
+}

@@ -1,0 +1,125 @@
+/* blog card container */
+.blog-card {
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    margin-bottom: 25px;
+    overflow: hidden;
+    border: none;
+}
+
+.blog-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+}
+
+/* title of the blogs */
+.card-title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+    color: #343a40;
+}
+
+/* blog meta message */
+.blog-meta {
+    color: #6c757d;
+    margin-bottom: 15px;
+    font-size: 1rem;
+}
+
+/* preview of the blog content */
+.blog-content {
+    background-color: #f8f9fa;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    line-height: 1.6;
+    color: #495057;
+}
+
+/* comment badge */
+.comment-badge {
+    background-color: #f0f5ff;
+    color: #4e73df;
+    padding: 5px 15px;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    transition: all 0.3s;
+    display: inline-block;
+}
+
+.comment-badge:hover {
+    background-color: #e1ebff;
+}
+
+/* read more button */
+.btn-read-more {
+    border-radius: 50px;
+    padding: 8px 20px;
+    font-weight: 600;
+    transition: all 0.3s;
+    background-color: white;
+    color: #4e73df;
+    border-color: #4e73df;
+}
+
+.btn-read-more:hover {
+    background-color: #4e73df;
+    color: white;
+    transform: translateY(-2px);
+}
+
+/* header area of the blog */
+.blog-header {
+    background: linear-gradient(to right, #4e73df, #224abe);
+    padding: 3rem 0;
+    margin-bottom: 3rem;
+    color: white;
+    border-radius: 0 0 15px 15px;
+    box-shadow: 0 4px 15px rgba(78, 115, 223, 0.2);
+}
+
+/* create the button of the blog */
+.btn-create {
+    border-radius: 50px;
+    padding: 10px 24px;
+    font-weight: 600;
+    transition: all 0.3s;
+    background-color: white;
+    color: #4e73df;
+    border: none;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.btn-create:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+    background-color: #f8f9fa;
+}
+
+/* hint of the empty state */
+.empty-state {
+    text-align: center;
+    padding: 3rem;
+    background-color: #f8f9fa;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+}
+
+/* style of the icon */
+.fa-user-circle, .fa-calendar-alt, .fa-comment, .fa-film {
+    margin-right: 5px;
+}
+
+/* responsive adjustment */
+@media (max-width: 768px) {
+    .film-title {
+        font-size: 2rem;
+    }
+
+    .blog-content {
+        padding: 12px;
+    }
+}

@@ -1,0 +1,95 @@
+.auth-card {
+    border: none;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+    border-radius: 0.75rem;
+    overflow: hidden;
+    transition: transform 0.3s;
+}
+
+.auth-card:hover {
+    transform: translateY(-5px);
+}
+
+.auth-header {
+    background: linear-gradient(135deg, #4e73df 0%, #224abe 100%);
+    padding: 1.5rem;
+}
+
+.auth-form-control {
+    border-radius: 0.5rem;
+    padding: 0.75rem 1rem;
+    border: 1px solid #e2e8f0;
+    background-color: #f8f9fa;
+    transition: all 0.3s;
+}
+
+.auth-form-control:focus {
+    background-color: #fff;
+    border-color: #4e73df;
+    box-shadow: 0 0 0 0.25rem rgba(78, 115, 223, 0.25);
+}
+
+.auth-btn {
+    border-radius: 0.5rem;
+    padding: 0.75rem 2rem;
+    font-weight: 600;
+    transition: all 0.3s;
+}
+
+.auth-btn-primary {
+    background: linear-gradient(135deg, #4e73df 0%, #224abe 100%);
+    border: none;
+}
+
+.auth-btn-primary:hover {
+    background: linear-gradient(135deg, #224abe 0%, #1a3a94 100%);
+    transform: translateY(-2px);
+}
+
+.auth-footer {
+    background-color: #f8f9fa;
+    border-top: 1px solid #e9ecef;
+    padding: 1rem;
+}
+
+.auth-link {
+    color: #4e73df;
+    font-weight: 600;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.auth-link:hover {
+    color: #224abe;
+    text-decoration: underline;
+}
+
+.password-requirements {
+    background-color: #f0f4ff;
+    border-left: 4px solid #4e73df;
+    padding: 1rem;
+    border-radius: 0 0.5rem 0.5rem 0;
+}
+
+.password-requirements p {
+    color: #4e73df;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+}
+
+.password-requirements ul {
+    margin-bottom: 0;
+}
+
+.password-requirements li {
+    margin-bottom: 0.25rem;
+    position: relative;
+    padding-left: 1.5rem;
+}
+
+.password-requirements li:before {
+    content: "→";
+    position: absolute;
+    left: 0;
+    color: #4e73df;
+}

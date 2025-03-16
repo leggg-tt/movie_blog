@@ -1,0 +1,61 @@
+.film-upload-container {
+    margin-bottom: 40px;
+}
+
+.upload-card {
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    overflow: hidden;
+    transition: transform 0.3s;
+}
+
+.upload-card:hover {
+    transform: translateY(-5px);
+}
+
+.upload-intro {
+    background-color: #f8f9fa;
+    padding: 15px;
+    border-radius: 10px;
+    border-left: 4px solid #4e73df;
+}
+
+.poster-upload-container {
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 10px;
+    border: 2px dashed #dee2e6;
+    transition: all 0.3s;
+}
+
+.poster-upload-container:hover {
+    border-color: #4e73df;
+    background-color: #f0f4ff;
+}
+
+.submit-btn {
+    padding: 10px 25px;
+    font-weight: 600;
+    border-radius: 50px;
+    background: linear-gradient(135deg, #4e73df 0%, #224abe 100%);
+    border: none;
+    transition: all 0.3s;
+}
+
+.submit-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(78, 115, 223, 0.3);
+    background: linear-gradient(135deg, #224abe 0%, #1a3a94 100%);
+}
+
+.cancel-btn {
+    padding: 10px 25px;
+    font-weight: 600;
+    border-radius: 50px;
+    transition: all 0.3s;
+}
+
+.cancel-btn:hover {
+    transform: translateY(-2px);
+}

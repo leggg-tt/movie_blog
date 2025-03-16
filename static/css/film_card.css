@@ -1,0 +1,90 @@
+/* film card style */
+.film-card {
+    transition: transform 0.3s;
+    height: 100%;
+    border: none;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+}
+
+.film-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+}
+
+.film-poster {
+    height: 300px;
+    object-fit: cover;
+    transition: transform 0.5s;
+}
+
+.film-poster-container {
+    position: relative;
+    overflow: hidden;
+    border-radius: 10px;
+}
+
+.film-poster-container img {
+    transition: transform 0.5s ease;
+}
+
+.film-poster-container:hover img {
+    transform: scale(1.03);
+}
+
+.film-poster-container:hover .film-poster {
+    transform: scale(1.05);
+}
+
+/*  card overlay effects */
+.film-card-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.film-poster-container:hover .film-card-overlay {
+    opacity: 1;
+}
+
+.overlay-btn {
+    border-radius: 50px;
+    padding: 8px 20px;
+    font-weight: 600;
+    transform: translateY(20px);
+    transition: all 0.3s;
+}
+
+.film-poster-container:hover .overlay-btn {
+    transform: translateY(0);
+}
+
+.film-year, .film-director {
+    display: inline-block;
+}
+
+/* rating the star */
+.rating {
+    color: #ffc107;
+    font-size: 1.2rem;
+}
+
+.rating-number {
+    font-weight: 600;
+    color: #333;
+}
+
+.no-rating {
+    color: #aaa;
+    font-style: italic;
+    font-size: 0.9rem;
+}

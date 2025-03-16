@@ -1,0 +1,103 @@
+/*  beautify the comment form */
+.review-form-container {
+    background-color: #f8f9fa;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 30px;
+}
+
+/* star rating style */
+.star-rating {
+    display: inline-flex;
+    align-items: center;
+    font-size: 1.5rem;
+}
+
+.star-rating-item {
+    color: #ccc;
+    margin-right: 5px;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.star-rating-item:hover,
+.star-rating-item.active {
+    color: #ffc107;
+}
+
+.selected-rating {
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+.fa-star-half-alt::before {
+    content: "\f5c0";
+}
+
+/* review card style */
+.review-card {
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+    margin-bottom: 20px;
+    overflow: hidden;
+    transition: transform 0.3s;
+}
+
+.review-card:hover {
+    transform: translateY(-5px);
+}
+
+.review-header {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #e9ecef;
+    padding: 15px 20px;
+}
+
+.review-body {
+    padding: 20px;
+}
+
+.review-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    background-color: #f8f9fa;
+    border-top: 1px solid #e9ecef;
+}
+
+/* like button style */
+.like-button {
+    padding: 8px 15px;
+    border-radius: 50px;
+    transition: all 0.3s ease;
+    background-color: transparent;
+    border: 1px solid #007bff;
+    color: #007bff;
+}
+
+.like-button i {
+    font-size: 1.2rem;
+    margin-right: 5px;
+    transition: transform 0.3s ease;
+}
+
+.like-button:hover i {
+    transform: scale(1.2);
+}
+
+.like-button.liked {
+    background-color: #007bff;
+    color: white;
+    border-color: #007bff;
+}
+
+.like-button.not-liked:hover {
+    background-color: rgba(0, 123, 255, 0.1);
+}
+
+.like-count {
+    font-weight: bold;
+    margin-left: 5px;
+}

@@ -1,0 +1,141 @@
+.visualization-container {
+    padding: 20px 0 40px;
+}
+
+.visualization-subtitle {
+    color: #6c757d;
+    margin-top: 5px;
+    margin-left: 55px;
+    font-size: 1.1rem;
+}
+
+/* 卡片样式 */
+.visualization-card {
+    background-color: #fff;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+    overflow: hidden;
+    margin-bottom: 25px;
+    height: 100%;
+    transition: all 0.3s ease;
+    border: none;
+}
+
+.visualization-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+}
+
+.visualization-card-header {
+    background: linear-gradient(135deg, #4e73df 0%, #224abe 100%);
+    color: white;
+    padding: 20px;
+    border-bottom: none;
+}
+
+.visualization-card-header h5 {
+    margin: 0;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+}
+
+.visualization-card-header h5 i {
+    margin-right: 10px;
+}
+
+.visualization-card-body {
+    padding: 25px;
+    position: relative;
+}
+
+/* container of the chart */
+.chart-container {
+    position: relative;
+    height: 350px;
+    margin-bottom: 15px;
+}
+
+/* loading animation */
+.chart-loading {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(255, 255, 255, 0.8);
+    z-index: 5;
+}
+
+.spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid rgba(78, 115, 223, 0.2);
+    border-radius: 50%;
+    border-top-color: #4e73df;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* no data message */
+.no-data-message {
+    text-align: center;
+    padding: 40px 20px;
+    background-color: #f8f9fa;
+    border-radius: 10px;
+    margin-top: 20px;
+}
+
+.no-data-icon {
+    font-size: 3rem;
+    color: #c8c8c8;
+    margin-bottom: 20px;
+}
+
+.no-data-message p {
+    font-size: 1.2rem;
+    color: #6c757d;
+    margin-bottom: 10px;
+}
+
+.no-data-message small {
+    color: #adb5bd;
+}
+
+/* information card */
+.visualization-info-card {
+    background-color: #f8f9fa;
+    border-radius: 15px;
+    padding: 25px;
+    margin-top: 30px;
+    border-left: 5px solid #4e73df;
+    display: flex;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+}
+
+.info-icon {
+    font-size: 2rem;
+    color: #4e73df;
+    margin-right: 20px;
+    display: flex;
+    align-items: center;
+}
+
+.info-content h5 {
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: #343a40;
+}
+
+.info-content p {
+    color: #6c757d;
+    margin-bottom: 10px;
+    line-height: 1.6;
+}

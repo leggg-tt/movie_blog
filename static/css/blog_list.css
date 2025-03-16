@@ -1,0 +1,92 @@
+/* login hint */
+.login-prompt {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 8px 20px;
+    border-radius: 30px;
+    display: inline-block;
+    margin-top: 10px;
+    font-size: 0.95rem;
+}
+
+.login-prompt a:hover {
+    text-decoration: underline !important;
+}
+
+/* beautify the paging control */
+.pagination-custom {
+    margin-top: 2rem;
+}
+
+.pagination-custom .page-item .page-link {
+    color: #4e73df;
+    background-color: #fff;
+    border: 1px solid #dee2e6;
+    padding: 0.5rem 0.75rem;
+    margin: 0 3px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.pagination-custom .page-item .page-link:hover {
+    background-color: #e9ecef;
+    border-color: #dee2e6;
+    color: #224abe;
+    transform: translateY(-2px);
+    box-shadow: 0 3px 5px rgba(0,0,0,0.1);
+}
+
+.pagination-custom .page-item.active .page-link {
+    background-color: #4e73df;
+    border-color: #4e73df;
+    color: white;
+    font-weight: 600;
+}
+
+.pagination-custom .page-item.disabled .page-link {
+    color: #6c757d;
+    background-color: #f8f9fa;
+    border-color: #dee2e6;
+    cursor: not-allowed;
+}
+
+/* responsive adjustment - hide a part of information in the mini screen */
+@media (max-width: 768px) {
+    .pagination-custom .page-item .page-link {
+        padding: 0.4rem 0.6rem;
+        font-size: 0.9rem;
+    }
+
+    .pagination-custom .page-item .page-link i {
+        margin: 0;
+    }
+
+    .pagination-custom .page-item:first-child .page-link,
+    .pagination-custom .page-item:last-child .page-link {
+        display: none;
+    }
+}
+
+/* empty state hint adjustment */
+.empty-state {
+    background-color: white;
+    border-radius: 10px;
+    padding: 3rem 2rem;
+    text-align: center;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+    margin: 2rem 0;
+}
+
+.empty-state img {
+    opacity: 0.7;
+}
+
+.empty-state h3 {
+    color: #343a40;
+    font-weight: 600;
+}
+
+/* outside distance of the pagination container */
+.my-5 {
+    margin-top: 3rem !important;
+    margin-bottom: 3rem !important;
+}
